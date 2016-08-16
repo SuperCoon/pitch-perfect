@@ -53,21 +53,15 @@ class RecordSoundsViewController: UIViewController , AVAudioRecorderDelegate {
     
     func isPlayButtonPressed(buttonPressed: Bool) {
         
-        var recordButtonEnabled = true
-        var stopButtonEnabled = false
-        
         var recordLabelText = "Recording in progress"
         
         if !buttonPressed {
             
             recordLabelText = "Tap To Record"
-            
-            stopButtonEnabled = true
-            recordButtonEnabled = false
         }
         
-        self.recordButton.enabled = recordButtonEnabled
-        self.stopRecordButton.enabled = stopButtonEnabled
+        self.recordButton.enabled = !buttonPressed
+        self.stopRecordButton.enabled = buttonPressed
         
         recordLabel.text = recordLabelText
     }
