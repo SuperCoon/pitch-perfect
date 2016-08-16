@@ -19,9 +19,7 @@ class RecordSoundsViewController: UIViewController , AVAudioRecorderDelegate {
     
     @IBAction func recordButtonPressed(sender: AnyObject) {
         print("Record button is pressed")
-        recordLabel.text = "Recording in progress"
-        recordButton.enabled = false
-        stopRecordButton.enabled = true
+        self.isPlayButtonPressed(true)
         
         let dirPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask, true)[0] as String
         let recordingName = "recordedVoice.wav"
@@ -41,9 +39,8 @@ class RecordSoundsViewController: UIViewController , AVAudioRecorderDelegate {
     
     @IBAction func stopRecordingButtonPressed(sender: AnyObject) {
         print("Stop Recording button pressed")
-        recordButton.enabled = true
-        recordLabel.text = "Tap to record"
-        stopRecordButton.enabled = false
+        self.isPlayButtonPressed(false)
+        
         audioRecorder.stop()
         let audioSession = AVAudioSession.sharedInstance()
         try! audioSession.setActive(false)
@@ -52,6 +49,27 @@ class RecordSoundsViewController: UIViewController , AVAudioRecorderDelegate {
     override func viewWillAppear(animated: Bool) {
         print("View will appear")
         stopRecordButton.enabled = false
+    }
+    
+    func isPlayButtonPressed(buttonPressed: Bool) {
+        
+        var recordButtonEnabled = true
+        var stopButtonEnabled = false
+        
+        var recordLabelText = "Recording in progress"
+        
+        if !buttonPressed {
+            
+            recordLabelText = "Tap To Record"
+            
+            stopButtonEnabled = true
+            recordButtonEnabled = false
+        }
+        
+        self.recordButton.enabled = recordButtonEnabled
+        self.stopRecordButton.enabled = stopButtonEnabled
+        
+        recordLabel.text = recordLabelText
     }
     
     func audioRecorderDidFinishRecording(recorder: AVAudioRecorder, successfully flag: Bool) {
